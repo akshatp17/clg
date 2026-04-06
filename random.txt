@@ -1,0 +1,387 @@
+Install git
+git --version
+git config --global user.name <username>
+git config --global user.email <email>
+
+git init
+git status
+git add <> or git add .
+git commit -m "<msg>"
+git branch <new> -> git checkout <new> OR git checkout -b <new>
+git checkout main
+git merge <new>
+
+git branch -D <new>
+git log or git log --oneline
+git checkout <hash>
+git switch -
+
+-----------------------------------------------------------------------------------------------
+(Ubuntu)
+
+sudo apt update
+python3 --version
+sudo apt install python3-pip -y
+pip --version
+sudo apt install python3-venv -y
+mkdir devops2
+cd devops2
+python3 -m venv flaskenv
+source flaskenv/bin/activate
+pip install flask
+flask --version
+nano app.py
+
+--: Program(python3 app.py) :---
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home:
+    return "Hello, DevOps!"
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
+
+--: BUILD (nano build.sh) :--
+#!/bin/bash
+echo "Setting up environment..."
+python3 -m venv flaskenv
+source ./flask/bin/activate
+pip install flask
+echo "Environment setup complete. Run the app with python"
+
+--: TEST (nano test.py) :--
+import unittest
+from app import app
+
+class TestApp(unittest.TestCase):
+    def test_home(self):
+        tester = app.test_client()
+        response = tester.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, b"Hello, DevOps!")
+
+if __name__ == "__main__":
+    unittest.main()
+
+--: Configure (Do the following changes) :--
+nano .env -> FLASK_PORT=5000
+
+modify app.py :
+import os
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home:
+    return "Hello, DevOps!"
+
+if __name__ == "__main__":
+    port = int(os.getenv("FLASK_PORT", 5000))
+    app.run(port=port)
+
+--: Monitor :--
+add in app.py
+@app.route('/health')
+def health():
+    return {"status": "up"}, 200
+
+navigate to /health
+
+-----------------------------------------------------------------------------------------------
+pip install selenium
+pip show selenium
+mirrors.huaweicloud.com/chromedrive/144.0.7559.0/chromedriver_win64.zip (Exctract, copy .exr and paste in chromedriver in C)
+
+:::: program 1 (using chromedriver for testing)
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+from selenium.webdriver.chrome.service import Service
+
+service = Service("C:\\chromedriver\\chromedriver.exe")
+driver = webdriver.Chrome(service = service)
+driver.get("https://www.google.com)
+
+search_box = driver.find_element(By.NAME,"q")
+search_box.send_kets("selenium with python")
+search_box.send_kets(Keys.RETURN)
+
+time.sleep(10)
+browser.quit()
+
+:::: program 2 (Check webpage title is google or not)
+import unittest
+from selenium import webdriver
+
+class GoogleTestCase(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+        self.addCleanup(self.browser.quit)
+
+    def test_google_title(self):
+        self.driver.get("http://www.google.com")
+        self.assertEqual("Google", self.driver.title)
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
+
+:::: program 3 (open ff and search selenium)
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+
+browser = webdriver.Firefox()
+browser.get("http://www.yahoo.com")
+assert "Yahoo" in browser.title
+
+elem = browser.find_element(By.NAME, "p")
+elem.send_keys("selenium" + Keys.RETURN)
+time.sleep(10)
+browser.quit()
+
+-----------------------------------------------------------------------------------------------
+(Ubuntu) Maven
+
+sudo apt update
+sudo apt install
+mvn --version
+mkdir myapp
+cd myapp
+
+java --version
+mvn archetype:generate
+    groupid -> package name -> dsce.cscy.akshat
+    artifactid -> project name -> maven_app
+
+mvn validate -> mvn comple -> mvn test -> mvn package
+
+java -cp target/maven-app-1.0-SNAPSHOT.jar dsce.cscy.akshat.App
+
+sudo apt install gitgit clone https://github.com/KrishPluto/BoardGameListingWebApp.git
+
+do mvn compile
+
+java -jar database-service_project-0.01.jar
+
+-----------------------------------------------------------------------------------------------
+gradle normal:
+
+in vscode, install extensions -> gradle for java | extension pack for java | groovy
+ctrl + shift + p -> java -> gradle
+
+
+package gradle;
+
+import java.awt.Desktop;
+import java.net.URI;
+
+public class App {
+    public string getGreeting{
+        return "Hello World!";
+    }
+    public static void main(String[] args) {
+        try {
+            String url = "https://www.google.com";
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(new URL(url));
+            } else {
+                System.out.println("Desktop is not supported");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+gradle manual:
+java --versiondownload and install gradle, copy gradle 9.3.1 to Check
+System variable -> path -> add this gradle path
+
+cmd --> gradle --version
+mkdir gradleproject
+cd gradleproject
+
+gradle init
+type to build to generation : 1 (application)
+implementation language : 3 (groovy)
+target java version : default
+project name : default
+application structure : 1 (single application)
+build script DSL : 2 (groovy)
+
+
+gradle build
+gradle task
+
+add in build.gradle:
+task hello {
+    doLast {
+        println("Hello gradle!")
+    }
+}
+
+cmd -> gradle run and gradle hello
+
+-----------------------------------------------------------------------------------------------
+snyk
+
+Webapp
+
+CLI
+install nodejs
+node
+npm -validatenpm i -g snyksnyk auth
+
+create a new directory, clone pygoat repo and in that directory
+
+snyk test --snyk-unresolved
+snyk monitor --snyk-unresolved
+snyk fix
+
+In extension, normally load and run
+
+-----------------------------------------------------------------------------------------------
+Docker
+
+download and install Docker
+also install wsl in windows : wsl --install
+
+click on what is a container, next till end and click on github link OR github.com/docker/welcome-to-docker
+
+run Docker.exe, sign up
+open docker desktop -> How do I run a container
+
+powershell -> mkdir docker_app -> cd -> git clone paste link
+open docker.app -> Welcome to Docker -> src -> app.js
+Open Dockerfile in vscode
+
+pwshell -> cd welcome-to-docker -> docker built -t myapp -> docker run -p 3000:3000 myapp
+
+Manual Method:
+mkdir mydockerapp
+cd mydockerapp
+
+go to vscode and make new file app.py in the directory
+
+app.py:
+from flask import Flask
+app = Flask(__name__)
+@app.route("/")
+def hello():
+    return "Hello from Docker!"
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port = 5000)
+
+create requirements.txt -> Flask == 3.1.0
+
+write a Dockerfile : No extension
+FROM python:3.9
+WORKDIR/AppCOPY requirements.txt
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 5000
+CMD["python","app.py"]
+
+FILE -c -users -CSCY -mydockerapp
+pwshell -> docker built -t flask_project
+
+Go to DockerDesktop : pwshell -> docker run -p 5000:5000 flask_project
+
+open localhost:5000
+
+-----------------------------------------------------------------------------------------------
+(Ubuntu) Ansible
+
+sudo apt update
+sudo apt install ansible -y
+ansible --version
+mkdir ansible
+cd ansible
+
+gedit hosts.ini
+
+[local]
+localhost ansible_connection = local
+
+gedit setup.yml
+---
+- name: Install and Start Nginx
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Start and enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+ansible -playbook -i hosts.ini setup.yml
+
+visit localhost to see it working
+
+-----------------------------------------------------------------------------------------------
+Kubernetes
+
+install kubectl : https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+
+curl --version
+cd /
+mkdir minikube
+cd minikube
+paste the curl link from the website, then validate binary and checksum
+
+cd /
+mkdir minikube 
+cd minikube
+
+now go to this website : https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download and install minikube using powershell
+add path of minikube to sys env variables
+
+cmd -> kubectl version
+open docker Desktop
+- minikube start --driver = docker
+- minikube status
+- kubectl get nodes
+
+Go to chrome, isntall minikube website, section 4  (Deploy) -> Copy all links (1,2,3) and run in powershell
+
+
+-----------------------------------------------------------------------------------------------
+Jenkins
+
+Latest version of jdk is required so donwload and install that
+
+C -> program files -> Eclipse Adoptium -> bin ----> Copy the path and pase in env sys variables
+
+download and install jenkins via selecting local server and use 8081-8089 if 8080 is not available
+
+Settings -> local Security Policies -> Local Policies -> User Rights Assignemnt -> Log on as a service properties -> add user -> advanced -> find new and add admin
+
+in services, check whether Jenkins is running or not
+
+got to localhost:8081 (port)
+    find pswrd via given path or in jenkins.err.log
+    Don't create any new user, select install suggeested plugins
+    click on not now and start using jenkins
+    scroll down to build steps
+    select execute windows batch command
+        echo "The project created on %date% %time%"
+    save
+
+    now build now abd sekect #1 and see console output
