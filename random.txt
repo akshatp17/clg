@@ -47,7 +47,7 @@ if __name__ == "__main__":
 #!/bin/bash
 echo "Setting up environment..."
 python3 -m venv flaskenv
-source ./flask/bin/activate
+source flaskenv/bin/activate
 pip install flask
 echo "Environment setup complete. Run the app with python"
 
@@ -57,7 +57,7 @@ from app import app
 
 class TestApp(unittest.TestCase):
     def test_home(self):
-        tester = app.test_client()
+        tester = app.test_client(self)
         response = tester.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, b"Hello, DevOps!")
@@ -68,9 +68,13 @@ if __name__ == "__main__":
 --: Configure (Do the following changes) :--
 nano .env -> FLASK_PORT=5000
 
+pip install python-dotenv
+
 modify app.py :
 import os
 from flask import Flask
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -93,7 +97,7 @@ navigate to /health
 -----------------------------------------------------------------------------------------------
 pip install selenium
 pip show selenium
-mirrors.huaweicloud.com/chromedrive/144.0.7559.0/chromedriver_win64.zip (Exctract, copy .exr and paste in chromedriver in C)
+https://mirrors.huaweicloud.com/chromedriver/144.0.7559.0/chromedriver-win64.zip (Exctract, copy .exr and paste in chromedriver in C)
 
 :::: program 1 (using chromedriver for testing)
 from selenium import webdriver
@@ -120,7 +124,7 @@ from selenium import webdriver
 class GoogleTestCase(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome()
-        self.addCleanup(self.browser.quit)
+        self.addCleanup(self.driver.quit)
 
     def test_google_title(self):
         self.driver.get("http://www.google.com")
